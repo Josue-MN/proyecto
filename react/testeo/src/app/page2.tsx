@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 
 interface Persona{ //interfaz persona
@@ -16,27 +16,13 @@ let initialStatePersona:Persona = { //informa el valor inicial del estado person
 
 export default function Home() {
 
-  const miStorage = window.localStorage //creacion de estado
-
   const [persona, setPersona] = useState(initialStatePersona) //genera un useState para el objeto persona
-  const [personas,setPersonas] = useState<Persona[]>([]) // es una lista de personas str
   const [eNombre, setENombre] = useState("")
-
-  useEffect(()=>{           //cualquier cosa que pase sobre | const [personas,setPersonaa] = useState<Persona[]>([]) | muestra una actualizacion al estar pendiente de una ejecucion
-    //console.log("HOLAA")
-    let listadoStr = miStorage.getItem("personas")
-    if(listadoStr != null){
-      let listado = JSON.parse(listadoStr)
-      setPersonas(listado)
-    }
-  },[])
-
   const handlePersona = (name:string,value:string)=>{
 
     setPersona(
-      {...persona,[name]:value} //...persona recupera lo que se tenia anteriormente en persona
+      {...persona,[name]:value} //...persona recupera lo que se tenia anteriormente
     )
-
     //validaciones
     if(persona.nombre.length <= 3){
       setENombre("Debe tener mas de 3 caracteres")
@@ -44,10 +30,6 @@ export default function Home() {
     else{
       setENombre("")
     }
-  };
-  const handleRegistrar = ()=>{
-    miStorage.setItem("personas",JSON.stringify([...personas,persona])) // los corchetes crean una lista y los ... recuperan la lista persona y el ultimo recupera la ultima lista de persona, creando un nuevo listado mas la ultima persona agregada
-    
 
   }
   return (
@@ -90,9 +72,7 @@ export default function Home() {
       />
       <br></br>
 
-      <button onClick={()=>handleRegistrar()} >
-      Registrar
-      </button>
+      <button>Registrar</button>
     </form>
   );
 }
